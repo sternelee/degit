@@ -262,12 +262,12 @@ class Degit extends EventEmitter {
 		}
 
 		const file = `${dir}/${hash}.tar.gz`;
-		const url =
-			repo.site === 'gitlab'
-				? `${repo.url}/repository/archive.tar.gz?ref=${hash}`
-				: repo.site === 'bitbucket'
-				? `${repo.url}/get/${hash}.tar.gz`
-				: `${repo.url}/archive/${hash}.tar.gz`;
+		const mapUrl = {
+			'gitlab': `${repo.url}/repository/archive.tar.gz?ref=${hash}`,
+			'bitbucket': `${repo.url}/get/${hash}.tar.gz`,
+			'gitlab.xunlei': `${repo.url}/-/archive/${repo.ref}/${repo.name}-${repo.ref}.tar`
+		};
+		const url = mapUrl[repo.site] || `${repo.url}/archive/${hash}.tar.gz`;
 
 		try {
 			if (!this.cache) {
@@ -322,7 +322,7 @@ class Degit extends EventEmitter {
 	}
 }
 
-const supported = new Set(['github', 'gitlab', 'bitbucket', 'git.sr.ht']);
+const supported = new Set(['github', 'gitlab', 'bitbucket', 'git.sr.ht', 'gitlab.xunlei']);
 
 function parse(src) {
 	const match = /^(?:(?:https:\/\/)?([^:/]+\.[^:/]+)\/|git@([^:/]+)[:/]|([^/]+):)?([^/\s]+)\/([^/\s#]+)(?:((?:\/[^/\s#]+)+))?(?:\/)?(?:#(.+))?/.exec(
@@ -335,7 +335,7 @@ function parse(src) {
 	}
 
 	const site = (match[1] || match[2] || match[3] || 'github').replace(
-		/\.(com|org)$/,
+		/\.(com|org|cn)$/,
 		''
 	);
 	if (!supported.has(site)) {
@@ -350,11 +350,13 @@ function parse(src) {
 	const user = match[4];
 	const name = match[5].replace(/\.git$/, '');
 	const subdir = match[6];
-	const ref = match[7] || 'HEAD';
-
-	const domain = `${site}.${
-		site === 'bitbucket' ? 'org' : site === 'git.sr.ht' ? '' : 'com'
-	}`;
+	const ref = match[7] || (site ==='gitlab.xunlei' ? 'master' : 'HEAD');
+	const mapDomain = {
+		'bitbucket': 'org',
+		'git.sr.ht': '',
+		'gitlab.xunlei': 'cn'
+	}
+	const domain = `${site}.${mapDomain[site] || 'com'}`;
 	const url = `https://${domain}/${user}/${name}`;
 	const ssh = `git@${domain}:${user}/${name}`;
 

@@ -19,19 +19,19 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/Rich-Harris/degit.git"
+		"url": "git+https://github.com/sternelee/degit.git"
 	},
 	"keywords": [
 		"scaffolding",
 		"template",
 		"git"
 	],
-	"author": "Rich Harris",
+	"author": "sternelee",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/Rich-Harris/degit/issues"
+		"url": "https://github.com/sternelee/degit/issues"
 	},
-	"homepage": "https://github.com/Rich-Harris/degit#readme",
+	"homepage": "https://github.com/sternelee/degit#readme",
 	"devDependencies": {
 		"@rollup/plugin-commonjs": "18.0.0",
 		"@rollup/plugin-node-resolve": "11.2.1",
