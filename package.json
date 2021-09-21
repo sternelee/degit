@@ -1,6 +1,6 @@
 {
-	"name": "degit",
-	"version": "2.8.4",
+	"name": "@sternelee/degit",
+	"version": "2.9.0",
 	"engines": {
 		"node": ">=8.0.0"
 	},
@@ -14,8 +14,7 @@
 		"dev": "npm run build -- --watch",
 		"build": "rollup -c",
 		"test": "mocha",
-		"pretest": "npm run build",
-		"prepublishOnly": "npm test"
+		"pretest": "npm run build"
 	},
 	"repository": {
 		"type": "git",
